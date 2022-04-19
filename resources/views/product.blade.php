@@ -8,10 +8,10 @@
                 <h2 class="card-header">商品一覧</h2>
 
                 <div class="card-body">
-                    @if (session('status'))
-                    <div class="alert alert-success" role="alert">
-                        {{ session('status') }}
-                    </div>
+                    @if (session('err_msg'))
+                    <p class="text-danger">
+                        {{ session('err_msg') }}
+                    </p>
                     @endif
 
                     <table class="table table-striped">
@@ -29,7 +29,7 @@
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>{{ $product->img }}</td>
-                            <td>{{ $product->name }}</td>
+                            <td><a href="/product/{{ $product->id }}">{{ $product->name }}</a></td>
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->stock }}</td>
                             <td>{{ $product->maker }}</td>

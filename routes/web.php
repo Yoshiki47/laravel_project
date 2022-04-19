@@ -11,7 +11,13 @@
 |
 */
 
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Route;
+
 Auth::routes();
 
 // 商品一覧画面を表示
 Route::get('/', 'ProductController@showProductList')->name('products');
+
+// 商品詳細画面を表示
+Route::get('/product/{id}', 'ProductController@showDetail')->name('show');
