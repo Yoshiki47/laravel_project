@@ -19,5 +19,11 @@ Auth::routes();
 // 商品一覧画面を表示
 Route::get('/', 'ProductController@showProductList')->name('products');
 
+// 商品登録画面を表示
+Route::get('/product/create', 'ProductController@showCreate')->name('create');
+
+// 商品登録
+Route::post('/product/store', 'ProductController@exeStore')->name('store');
+
 // 商品詳細画面を表示
 Route::get('/product/{id}', 'ProductController@showDetail')->name('show');

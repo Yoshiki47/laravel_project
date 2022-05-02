@@ -28,8 +28,8 @@
                         @foreach ($products as $product)
                         <tr>
                             <td>{{ $product->id }}</td>
-                            <td>{{ $product->img }}</td>
-                            <td><a href="/product/{{ $product->id }}">{{ $product->name }}</a></td>
+                            <td>{{ $product->img_path }}</td>
+                            <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->stock }}</td>
                             <td>{{ $product->maker }}</td>
