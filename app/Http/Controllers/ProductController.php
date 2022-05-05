@@ -90,4 +90,53 @@ class ProductController extends Controller
         \Session::flash('err_msg', '商品を登録しました');
         return redirect(route('products'));
     }
+
+    /**
+     * 商品編集フォームを表示する
+     * @param int $id
+     * @return view
+     */
+    public function showEdit($id)
+    {
+        $product = Product::find($id);
+
+        if (is_null($product)) {
+            \Session::flash('err_msg', 'データがありません');
+            return redirect(route('products'));
+        }
+
+        return view('edit', ['product' => $product]);
+    }
+
+    /**
+     * 商品を更新する
+     * 
+     * @return view
+     */
+    public function exeUpdate(ProductRequest $request)
+    {
+        // 商品のデータを受け取る
+        $inputs = $request->all();
+
+        \DB::beginTransaction();
+        try {
+            // 商品を更新する
+            $product = Product::find($inputs['id']);
+            $product->fill([
+                'product_name' => $inputs['product_name'],
+                'maker' => $inputs['maker'],
+                'price' => $inputs['price'],
+                'stock' => $inputs['stock'],
+                'comment' => $inputs['comment'],
+            ]);
+            $product->save();
+            \DB::commit();
+        } catch (\Throwable $e) {
+            \DB::rollback();
+            abort(500);
+        }
+
+        \Session::flash('err_msg', '商品を更新しました');
+        return redirect(route('products'));
+    }
 }

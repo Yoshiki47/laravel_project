@@ -27,3 +27,7 @@ Route::post('/product/store', 'ProductController@exeStore')->name('store');
 
 // 商品詳細画面を表示
 Route::get('/product/{id}', 'ProductController@showDetail')->name('show');
+
+// 商品編集画面を表示
+Route::get('/product/edit/{id}', 'ProductController@showEdit')->name('edit');
+Route::post('/product/update', 'ProductController@exeUpdate')->name('update');
