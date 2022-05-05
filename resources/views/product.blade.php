@@ -33,7 +33,7 @@
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->stock }}</td>
                             <td>{{ $product->maker }}</td>
-                            <td><button type="button" class="btn btn-primary" onclick="location.href='/blog/edit/{{ $product->id }}'">編集</button></td>
+                            <td><button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">編集</button></td>
                             <form method="POST" action="{{ route('delete', $product->id) }}" onSubmit="return checkDelete()">
                                 @csrf
                                 <td><button type="submit" class="btn btn-primary" onclick=>削除</button></td>
