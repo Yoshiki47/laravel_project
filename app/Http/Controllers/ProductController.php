@@ -139,4 +139,27 @@ class ProductController extends Controller
         \Session::flash('err_msg', '商品を更新しました');
         return redirect(route('products'));
     }
+
+    /**
+     * 商品削除
+     * @param int $id
+     * @return view
+     */
+    public function exeDelete($id)
+    {        
+        if (empty($id)) {
+            \Session::flash('err_msg', 'データがありません');
+            return redirect(route('products'));
+        }
+
+        try {
+            // 商品を削除
+            Product::destroy($id);
+        } catch(\Throwable $e) {
+            abort(500);
+        }
+
+        \Session::flash('err_msg', '削除しました。');
+        return redirect(route('products'));
+    }
 }
