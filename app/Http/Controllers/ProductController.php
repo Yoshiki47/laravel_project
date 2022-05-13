@@ -128,6 +128,7 @@ class ProductController extends Controller
                 'price' => $inputs['price'],
                 'stock' => $inputs['stock'],
                 'comment' => $inputs['comment'],
+                'img_path' => $inputs['img_path'],
             ]);
             $product->save();
             \DB::commit();

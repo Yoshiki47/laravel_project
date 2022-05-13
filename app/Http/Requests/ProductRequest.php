@@ -27,8 +27,7 @@ class ProductRequest extends FormRequest
             'product_name' => 'required | max:100',
             'maker' => 'required',
             'price' => 'required',
-            'stock' => 'required',            
-            'comment' => 'required',
+            'stock' => 'required',
         ];
     }
 }
