@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
             $table->integer('price');
             $table->integer('stock');
             $table->string('comment', 1000);
-            $table->text('img_path');
+            $table->MEDIUMBLOB('img_path');
             $table->timestamps();
         });
     }

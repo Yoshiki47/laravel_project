@@ -28,7 +28,7 @@
                         @foreach ($products as $product)
                         <tr>
                             <td>{{ $product->id }}</td>
-                            <td>{{ $product->img_path }}</td>
+                            <td><img src="{{ $product->img_path }}" width="150" height="150"></td>
                             <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->stock }}</td>
