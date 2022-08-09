@@ -19,13 +19,13 @@ class CreateProductsTable extends Migration
         
         Schema::create('products', function (Blueprint $table) {
             $table->bigIncrements('id');
-            $table->integer('company_id')->primary(false);
+            $table->unsignedBigInteger('company_id')->primary(false);
             $table->string('product_name', 255);
             $table->integer('price');
             $table->integer('stock');
             $table->string('comment', 1000);
-            $table->MEDIUMBLOB('img_path');
-            $table->timestamps();
+            $table->text('img_path')->nullable();
+            $table->timestamps();            
         });
     }
 
