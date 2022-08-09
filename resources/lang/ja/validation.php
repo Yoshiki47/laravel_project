@@ -149,7 +149,7 @@ return [
         'email' => 'メールアドレス',
         'password' => 'パスワード',
         'product_name' => '商品名',
-        'maker' => 'メーカー名',
+        'company_name' => 'メーカー名',
         'price' => '値段',
         'stock' => '在庫数',
         'comment' => 'コメント',
