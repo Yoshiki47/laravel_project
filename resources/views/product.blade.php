@@ -32,11 +32,11 @@
                             <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
                             <td>{{ $product->price }}</td>
                             <td>{{ $product->stock }}</td>
-                            <td>{{ $product->maker }}</td>
+                            <td>{{ $product->company_id }}</td>
                             <td><button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">編集</button></td>
-                            <form method="POST" action="{{ route('delete', $product->id) }}" onSubmit="return checkDelete()">
+                            <form method="POST" action="/product/delete/{{ $product->id }}">
                                 @csrf
-                                <td><button type="submit" class="btn btn-primary" onclick=>削除</button></td>
+                                <td><button id="deleteBtn" type="submit" class="btn btn-primary" onclick="location.href='/product/delete/{{ $product->id }}'">削除</button></td>
                             </form>
                         </tr>
                         @endforeach
@@ -45,9 +45,12 @@
             </div>
         </div>
     </div>
+
+    <!-- ページネーションリンク -->
+    {{ $products->links('vendor.pagination.bootstrap-4') }}
 </div>
 
-<script>
+<!-- <script>
     function checkDelete() {
         if (window.confirm('削除してよろしいですか？')) {
             return true;
@@ -55,5 +58,5 @@
             return false;
         }
     }
-</script>
+</script> -->
 @endsection
