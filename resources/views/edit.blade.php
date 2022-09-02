@@ -5,10 +5,14 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2">
             <h2>商品編集フォーム</h2>
-            <form method="POST" action="{{ route('update') }}" onSubmit="return checkSubmit()">
+            <form method="POST" action="{{ route('update') }}" onSubmit="return checkUpdate()">
                 @csrf
                 <input type="hidden" name="id" value="{{ $product->id }}">
                 <div class="form-group">
+                    <label for="product_id">
+                        商品ID
+                    </label>
+                    <p>{{ $product->id }}</p>
                     <label for="product_name">
                         商品名
                     </label>
@@ -20,13 +24,17 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="maker">
+                    <label for="company_id">
                         メーカー
                     </label>
-                    <input id="maker" name="maker" class="form-control" value="{{ $product->maker }}" type="text">
-                    @if ($errors->has('maker'))
+                    <select name="company_id">                        
+                        @foreach ($companies as $company)
+                            <option id="company_id" name="company_id" value="{{ $company->id }}" @if(old('company_id') == $company->id) selected @endif>{{ $company->company_name }}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('company_id'))
                     <div class="text-danger">
-                        {{ $errors->first('maker') }}
+                        {{ $errors->first('company_id') }}
                     </div>
                     @endif
                 </div>
@@ -78,7 +86,7 @@
                     <a class="btn btn-secondary" href="{{ route('products') }}">
                         戻る
                     </a>
-                    <button type="submit" class="btn btn-primary">
+                    <button id="updateBtn" type="submit" class="btn btn-primary">
                         更新する
                     </button>
                 </div>
@@ -86,13 +94,4 @@
         </div>
     </div>
 </div>
-<script>
-    function checkSubmit() {
-        if (window.confirm('更新してよろしいですか？')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script>
 @endsection
