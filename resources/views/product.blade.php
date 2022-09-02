@@ -28,15 +28,25 @@
                         @foreach ($products as $product)
                         <tr>
                             <td>{{ $product->id }}</td>
-                            <td><img src="{{ $product->img_path }}" width="150" height="150"></td>
+                            <td>
+                                @if ($product->img_path === null)
+                                    <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
+                                @else
+                                    <img src="{{ asset('/storage' .$product->img_path) }}" width="150" height="150">
+                                @endif
+                            </td>
                             <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
-                            <td>{{ $product->price }}</td>
-                            <td>{{ $product->stock }}</td>
-                            <td>{{ $product->company_id }}</td>
-                            <td><button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">編集</button></td>
-                            <form method="POST" action="/product/delete/{{ $product->id }}">
+                            <td>{{ $product->price }}円</td>
+                            <td>{{ $product->stock }}個</td>
+                            <td>{{ $product->company_name }}</td>
+                            <td>
+                                <button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">編集</button>
+                            </td>
+                            <form method="POST" action="{{ route('delete', $product->id) }}" onsubmit="return checkDelete()">
                                 @csrf
-                                <td><button id="deleteBtn" type="submit" class="btn btn-primary" onclick="location.href='/product/delete/{{ $product->id }}'">削除</button></td>
+                                <td>
+                                    <button type="submit" class="btn btn-primary" onclick="">削除</button>
+                                </td>
                             </form>
                         </tr>
                         @endforeach
@@ -49,14 +59,4 @@
     <!-- ページネーションリンク -->
     {{ $products->links('vendor.pagination.bootstrap-4') }}
 </div>
-
-<!-- <script>
-    function checkDelete() {
-        if (window.confirm('削除してよろしいですか？')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script> -->
 @endsection

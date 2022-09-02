@@ -19,13 +19,18 @@
                     @endif
                 </div>
                 <div class="form-group">
-                    <label for="maker">
+                    <label for="company_id">
                         メーカー
                     </label>
-                    <input id="maker" name="maker" class="form-control" value="{{ old('maker') }}" type="text">
-                    @if ($errors->has('maker'))
+                    <select class="form-select" name="company_id">
+                        <option selected="selected" value="" style="display: none;">メーカーを選択してください</option>
+                        @foreach ($companies as $company)
+                        <option id="company_id" value="{{ $company->id }}">{{ $company->company_name }}</option>
+                        @endforeach
+                    </select>
+                    @if ($errors->has('company_id'))
                     <div class="text-danger">
-                        {{ $errors->first('maker') }}
+                        {{ $errors->first('company_id') }}
                     </div>
                     @endif
                 </div>
@@ -85,13 +90,4 @@
         </div>
     </div>
 </div>
-<script>
-    function checkSubmit() {
-        if (window.confirm('送信してよろしいですか？')) {
-            return true;
-        } else {
-            return false;
-        }
-    }
-</script>
 @endsection

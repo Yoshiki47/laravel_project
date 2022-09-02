@@ -45,7 +45,8 @@ class Product extends Model
      * @return $products
      */
 
-    public function productList() {
+    public function productList()
+    {
         $products = DB::table('products')
             ->join('companies', 'products.company_id', '=', 'companies.id')
             ->select(
@@ -57,13 +58,19 @@ class Product extends Model
                 'products.comment',
                 'companies.company_name',
             )
-            ->orderBy('products.id', 'desc')
-            ->paginate(5);
+            ->orderBy('products.id', 'asc')
+            ->paginate(10);
 
         return $products;
     }
 
-    public function createProduct($param) {
+
+    /**
+     * 
+     * @param param
+     */
+    public function createProduct($param)
+    {
         DB::table('products')->insert([
             'company_id' => $param['company_id'],
             'product_name' => $param['product_name'],
@@ -72,5 +79,15 @@ class Product extends Model
             'comment' => $param['comment'],
             'img_path' => $param['img_path'],
         ]);
+    }
+
+    /**
+     * 商品情報を削除
+     *
+     * @param $id
+     */
+    public function deleteProduct($id)
+    {
+        DB::table('products')->delete($id);
     }
 }

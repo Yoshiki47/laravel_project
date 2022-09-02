@@ -4,7 +4,9 @@ namespace App\Http\Controllers;
 
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Company;
 use App\Http\Requests\ProductRequest;
+use Illuminate\Support\Facades\DB;
 
 class ProductController extends Controller
 {
@@ -16,16 +18,35 @@ class ProductController extends Controller
     public function __construct()
     {
         $this->middleware('auth');
+        $this->product = new Product();
+        $this->company = new Company();
     }
 
     /**
-     * Show the application dashboard.
+     * データベースに渡すデータの生成
      *
-     * @return \Illuminate\Contracts\Support\Renderable
+     * @param ProductRequest $request
+     * @return $result
      */
-    public function index()
+    public function createData(ProductRequest $request)
     {
-        return view('home');
+        $img_path = $request->file('img_path');
+
+        if (!empty($img_path)) {
+            $image = $img_path->getPathname();
+            $img_path->storeAs('', $image, 'public');
+        }
+
+        $result = [];
+        $result['id'] = $request->input('id');
+        $result['company_id'] = $request->input('company_id');
+        $result['product_name'] = $request->input('product_name');
+        $result['price'] = $request->input('price');
+        $result['stock'] = $request->input('stock');
+        $result['comment'] = $request->input('comment');
+        $result['img_path'] = $img_path;
+
+        return $result;
     }
 
     /**
@@ -35,9 +56,10 @@ class ProductController extends Controller
      */
     public function showProductList()
     {
-        $products = Product::all();
+        $products = $this->product->productList();
+        $company = $this->company->companyData();
 
-        return view('product', ['products' => $products]);
+        return view('product', compact('products', 'company'));
     }
 
     /**
@@ -48,13 +70,14 @@ class ProductController extends Controller
     public function showDetail($id)
     {
         $product = Product::find($id);
+        $company = $product->company;
 
         if (is_null($product)) {
             \Session::flash('err_msg', 'データがありません');
             return redirect(route('products'));
         }
 
-        return view('detail', ['product' => $product]);
+        return view('detail', compact('product', 'company'));
     }
 
     /**
@@ -64,27 +87,34 @@ class ProductController extends Controller
      */
     public function showCreate()
     {
-        return view('form');
+        try {
+            $companies = $this->company->companyData();
+        } catch (\Throwable $e) {
+            throw new \Exception($e->getMessage());
+        }
+
+        return view('form', compact('companies'));
     }
 
     /**
      * 商品登録する
      * 
+     * @param ProductRequest $request
      * @return view
      */
     public function exeStore(ProductRequest $request)
     {
         // 商品のデータを受け取る
-        $inputs = $request->all();
+        $insert_data = $this->createData($request);
 
         \DB::beginTransaction();
         try {
-            // 商品を登録        
-            Product::create($inputs);
+            // 商品を登録
+            $this->product->createProduct($insert_data);            
             \DB::commit();
         } catch (\Throwable $e) {
             \DB::rollback();
-            abort(500);
+            throw new \Exception($e->getMessage());
         }
 
         \Session::flash('err_msg', '商品を登録しました');
@@ -99,13 +129,14 @@ class ProductController extends Controller
     public function showEdit($id)
     {
         $product = Product::find($id);
+        $companies = Company::all();
 
         if (is_null($product)) {
             \Session::flash('err_msg', 'データがありません');
             return redirect(route('products'));
         }
 
-        return view('edit', ['product' => $product]);
+        return view('edit', compact('product', 'companies'));
     }
 
     /**
@@ -124,17 +155,18 @@ class ProductController extends Controller
             $product = Product::find($inputs['id']);
             $product->fill([
                 'product_name' => $inputs['product_name'],
-                'maker' => $inputs['maker'],
+                'company_id' => $inputs['company_id'],
                 'price' => $inputs['price'],
                 'stock' => $inputs['stock'],
                 'comment' => $inputs['comment'],
                 'img_path' => $inputs['img_path'],
             ]);
+
             $product->save();
             \DB::commit();
         } catch (\Throwable $e) {
             \DB::rollback();
-            abort(500);
+            throw new \Exception($e->getMessage());
         }
 
         \Session::flash('err_msg', '商品を更新しました');
@@ -155,9 +187,9 @@ class ProductController extends Controller
 
         try {
             // 商品を削除
-            Product::destroy($id);
+            $this->product->deleteProduct($id);
         } catch(\Throwable $e) {
-            abort(500);
+            throw new \Exception($e->getMessage());
         }
 
         \Session::flash('err_msg', '削除しました。');

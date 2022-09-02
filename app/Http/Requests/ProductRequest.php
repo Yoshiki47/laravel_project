@@ -25,9 +25,9 @@ class ProductRequest extends FormRequest
     {
         return [
             'product_name' => 'required | max:100',
-            'company_name' => 'required',
-            'price' => 'required',
-            'stock' => 'required',
+            'company_id' => 'required | integer | exists:companies,id',
+            'price' => 'required | integer',
+            'stock' => 'required | integer',
         ];
     }
 }
