@@ -142,27 +142,18 @@ class ProductController extends Controller
     /**
      * 商品を更新する
      * 
+     * @param ProductRequest $request
      * @return view
      */
     public function exeUpdate(ProductRequest $request)
     {
         // 商品のデータを受け取る
-        $inputs = $request->all();
+        $update_data = $this->createData($request);
 
         \DB::beginTransaction();
         try {
             // 商品を更新する
-            $product = Product::find($inputs['id']);
-            $product->fill([
-                'product_name' => $inputs['product_name'],
-                'company_id' => $inputs['company_id'],
-                'price' => $inputs['price'],
-                'stock' => $inputs['stock'],
-                'comment' => $inputs['comment'],
-                'img_path' => $inputs['img_path'],
-            ]);
-
-            $product->save();
+            $this->product->updateProduct($update_data);            
             \DB::commit();
         } catch (\Throwable $e) {
             \DB::rollback();
@@ -175,8 +166,8 @@ class ProductController extends Controller
 
     /**
      * 商品削除
-     * @param int $id
-     * @return view
+     * 
+     * @param $id
      */
     public function exeDelete($id)
     {        

@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2">
             <h2>商品編集フォーム</h2>
-            <form method="POST" action="{{ route('update') }}" onSubmit="return checkUpdate()">
+            <form method="POST" action="{{ route('update') }}" onSubmit="return checkUpdate()" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value="{{ $product->id }}">
                 <div class="form-group">
@@ -27,9 +27,9 @@
                     <label for="company_id">
                         メーカー
                     </label>
-                    <select name="company_id">                        
+                    <select name="company_id">
                         @foreach ($companies as $company)
-                            <option id="company_id" name="company_id" value="{{ $company->id }}" @if($company->id === (int)old('company_id', $product->company_id)) selected @endif >{{ $company->company_name }}</option>
+                        <option id="company_id" name="company_id" value="{{ $company->id }}" @if($company->id === (int)old('company_id', $product->company_id)) selected @endif >{{ $company->company_name }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('company_id'))
@@ -75,7 +75,12 @@
                     <label for="img_path">
                         商品画像
                     </label>
-                    <input type="file" id="img_path" name="img_path" class="form-control">{{ $product->img_path }}</input>
+                    @if ($product->img_path === null)
+                        <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
+                    @else
+                        <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
+                    @endif
+                    <input type="file" name="img_path" class="form-control">{{ $product->img_path }}</input>
                     @if ($errors->has('img_path'))
                     <div class="text-danger">
                         {{ $errors->first('img_path') }}

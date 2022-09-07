@@ -40,8 +40,9 @@ class Product extends Model
     }
 
 
-    // 一覧表示
     /**
+     * 商品一覧表示
+     * 
      * @return $products
      */
 
@@ -66,6 +67,7 @@ class Product extends Model
 
 
     /**
+     * 商品登録
      * 
      * @param param
      */
@@ -80,6 +82,25 @@ class Product extends Model
             'img_path' => $param['img_path'],
         ]);
     }
+
+
+    /**
+     * 商品情報を更新
+     * 
+     * @param $param
+     */
+    public function updateProduct($param) {
+        DB::table('products')->where('id', $param['id'])
+        ->update([
+            'company_id' => $param['company_id'],
+            'product_name' => $param['product_name'],
+            'price' => $param['price'],
+            'stock' => $param['stock'],
+            'comment' => $param['comment'],
+            'img_path' => $param['img_path'],
+        ]);
+    }
+    
 
     /**
      * 商品情報を削除
