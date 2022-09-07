@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2">
             <h2>商品登録フォーム</h2>
-            <form method="POST" action="{{ route('store') }}" onSubmit="return checkSubmit()">
+            <form method="POST" action="{{ route('store') }}" onSubmit="return checkSubmit()" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="product_name">
@@ -71,7 +71,7 @@
                     <label for="img_path">
                         商品画像
                     </label>
-                    <input type="file" id="img_path" name="img_path" class="form-control">{{ old('img_path') }}</input>
+                    <input type="file" name="img_path" class="form-control">{{ old('img_path') }}</input>
                     @if ($errors->has('img_path'))
                     <div class="text-danger">
                         {{ $errors->first('img_path') }}

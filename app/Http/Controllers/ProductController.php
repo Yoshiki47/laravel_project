@@ -33,8 +33,8 @@ class ProductController extends Controller
         $img_path = $request->file('img_path');
 
         if (!empty($img_path)) {
-            $image = $img_path->getPathname();
-            $img_path->storeAs('', $image, 'public');
+            $file_name = $img_path->getClientOriginalName();
+            $image = $img_path->storeAs('', $file_name, 'public');
         }
 
         $result = [];
@@ -44,7 +44,7 @@ class ProductController extends Controller
         $result['price'] = $request->input('price');
         $result['stock'] = $request->input('stock');
         $result['comment'] = $request->input('comment');
-        $result['img_path'] = $img_path;
+        $result['img_path'] = $image;
 
         return $result;
     }
@@ -110,7 +110,7 @@ class ProductController extends Controller
         \DB::beginTransaction();
         try {
             // 商品を登録
-            $this->product->createProduct($insert_data);            
+            $this->product->createProduct($insert_data);
             \DB::commit();
         } catch (\Throwable $e) {
             \DB::rollback();

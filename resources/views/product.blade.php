@@ -32,7 +32,7 @@
                                 @if ($product->img_path === null)
                                     <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
                                 @else
-                                    <img src="{{ asset('/storage' .$product->img_path) }}" width="150" height="150">
+                                    <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
                                 @endif
                             </td>
                             <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
