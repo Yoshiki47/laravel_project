@@ -29,7 +29,7 @@
                     </label>
                     <select name="company_id">                        
                         @foreach ($companies as $company)
-                            <option id="company_id" name="company_id" value="{{ $company->id }}" @if(old('company_id') == $company->id) selected @endif>{{ $company->company_name }}</option>
+                            <option id="company_id" name="company_id" value="{{ $company->id }}" @if($company->id === (int)old('company_id', $product->company_id)) selected @endif >{{ $company->company_name }}</option>
                         @endforeach
                     </select>
                     @if ($errors->has('company_id'))
