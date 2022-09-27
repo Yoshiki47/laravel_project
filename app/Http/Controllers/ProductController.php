@@ -30,6 +30,7 @@ class ProductController extends Controller
      */
     public function createData(ProductRequest $request)
     {
+        $image = $request->file('img_path');
         $img_path = $request->file('img_path');
 
         if (!empty($img_path)) {
