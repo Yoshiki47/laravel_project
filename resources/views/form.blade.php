@@ -82,7 +82,7 @@
                     <a class="btn btn-secondary" href="{{ route('products') }}">
                         戻る
                     </a>
-                    <button type="submit" class="btn btn-primary">
+                    <button type="submit" class="btn btn-primary" onsubmit="return checkSubmit()">
                         登録する
                     </button>
                 </div>
