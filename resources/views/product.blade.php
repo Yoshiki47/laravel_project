@@ -42,12 +42,13 @@
                             <td>
                                 <button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">編集</button>
                             </td>
-                            <form method="POST" action="{{ route('delete', $product->id) }}" onsubmit="return checkDelete()">
-                                @csrf
-                                <td>
+                            <td>
+                                <form method="POST" action="{{ route('delete') }}" onsubmit="return checkDelete()">
+                                    @csrf
+                                    <input type="hidden" value="{{ $product->id }}" name="product_id">
                                     <button type="submit" class="btn btn-primary" onclick="">削除</button>
-                                </td>
-                            </form>
+                                </form>
+                            </td>
                         </tr>
                         @endforeach
                     </table>

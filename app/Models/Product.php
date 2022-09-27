@@ -109,6 +109,6 @@ class Product extends Model
      */
     public function deleteProduct($id)
     {
-        DB::table('products')->delete($id);
+        DB::table('products')->where('id', $id)->delete();
     }
 }
