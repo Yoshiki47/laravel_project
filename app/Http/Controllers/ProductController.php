@@ -170,17 +170,20 @@ class ProductController extends Controller
      * 
      * @param $id
      */
-    public function exeDelete($id)
-    {        
-        if (empty($id)) {
+    public function exeDelete(Request $request)
+    {                
+        if (empty($request->product_id)) {
             \Session::flash('err_msg', 'データがありません');
             return redirect(route('products'));
         }
 
+        \DB::beginTransaction();
         try {
             // 商品を削除
-            $this->product->deleteProduct($id);
+            $this->product->deleteProduct($request->product_id);
+            \DB::commit();
         } catch(\Throwable $e) {
+            \DB::rollback();
             throw new \Exception($e->getMessage());
         }
 
