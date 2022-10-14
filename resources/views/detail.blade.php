@@ -12,10 +12,10 @@
                 <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
                 @endif
             </span>
-            <span>商品名:{{ $product->name }}</span>
+            <span>商品名:{{ $product->product_name }}</span>
             <span>値段:{{ $product->price }}</span>
             <span>在庫:{{ $product->stock }}</span>
-            <span>メーカー:{{ $company->company_name }}</span>
+            <span>メーカー:{{ $product->company_name }}</span>
         </div>
     </div>
 </div>
