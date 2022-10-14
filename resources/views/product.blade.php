@@ -30,9 +30,9 @@
                             <td>{{ $product->id }}</td>
                             <td>
                                 @if ($product->img_path === null)
-                                    <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
+                                <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
                                 @else
-                                    <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
+                                <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
                                 @endif
                             </td>
                             <td><a href="/product/{{ $product->id }}">{{ $product->product_name }}</a></td>
@@ -43,7 +43,7 @@
                                 <button type="button" class="btn btn-primary" onclick="location.href='/product/edit/{{ $product->id }}'">編集</button>
                             </td>
                             <td>
-                                <form method="POST" action="{{ route('delete') }}" onsubmit="return checkDelete()">
+                                <form method="POST" action="{{ route('delete') }}" onsubmit="return checkSubmit('削除してよろしいですか？')">
                                     @csrf
                                     <input type="hidden" value="{{ $product->id }}" name="product_id">
                                     <button type="submit" class="btn btn-primary" onclick="">削除</button>

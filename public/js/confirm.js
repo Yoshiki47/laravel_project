@@ -1,26 +1,9 @@
-// form.blade.phpに記載
-function checkSubmit() {
-	if (window.confirm('登録してよろしいですか？')) {
-		return true;
-	} else {
-		return false;
-	}
-}
+/**
+ * (form/product/edit).blade.phpに記載
+ * 各ボタン押下時にダイアログ表示
+ * 
+ */
 
-// product.blade.phpに記載
-function checkDelete() {
-	if (window.confirm('削除してよろしいですか？')) {
-		return true;
-	} else {
-		return false;
-	}
-}
-
-// edit.blade.phpに記載
-function checkUpdate() {
-	if (window.confirm('更新してよろしいですか？')) {
-		return true;
-	} else {
-		return false;
-	}
+function checkSubmit(message) {
+	return window.confirm(message);
 }

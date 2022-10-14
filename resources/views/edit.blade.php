@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2">
             <h2>商品編集フォーム</h2>
-            <form method="POST" action="{{ route('update') }}" onSubmit="return checkUpdate()" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('update') }}" onSubmit="return checkSubmit('更新してよろしいですか？')" enctype="multipart/form-data">
                 @csrf
                 <input type="hidden" name="id" value="{{ $product->id }}">
                 <div class="form-group">
@@ -76,9 +76,9 @@
                         商品画像
                     </label>
                     @if ($product->img_path === null)
-                        <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
+                    <img src="{{ asset('/storage/noimage.png') }}" alt="noimage" width="150" height="150">
                     @else
-                        <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
+                    <img src="{{ asset('/storage/' .$product->img_path) }}" width="150" height="150">
                     @endif
                     <input type="file" name="img_path" class="form-control">{{ $product->img_path }}</input>
                     @if ($errors->has('img_path'))

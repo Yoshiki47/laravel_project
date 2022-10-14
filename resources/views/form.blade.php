@@ -5,7 +5,7 @@
     <div class="row">
         <div class="col-md-12 col-md-offset-2">
             <h2>商品登録フォーム</h2>
-            <form method="POST" action="{{ route('store') }}" onSubmit="return checkSubmit()" enctype="multipart/form-data">
+            <form method="POST" action="{{ route('store') }}" onSubmit="return checkSubmit('登録してよろしいですか？')" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                     <label for="product_name">
@@ -82,7 +82,7 @@
                     <a class="btn btn-secondary" href="{{ route('products') }}">
                         戻る
                     </a>
-                    <button type="submit" class="btn btn-primary" onsubmit="return checkSubmit()">
+                    <button type="submit" class="btn btn-primary">
                         登録する
                     </button>
                 </div>
