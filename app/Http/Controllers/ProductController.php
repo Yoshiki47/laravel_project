@@ -58,28 +58,36 @@ class ProductController extends Controller
      */
     public function showProductList()
     {
-        $products = $this->product->productList();
-        $company = $this->company->companyData();
+        try {
+            $products = $this->product->productList();
+            $company = $this->company->companyData();
+        } catch (\Throwable $e) {
+            throw new \Exception($e->getMessage());
+        }
 
         return view('product', compact('products', 'company'));
     }
 
     /**
-     * 商品詳細を表示する
-     * @param int $id
+     * 商品詳細画面を表示する
+     * 
+     * @param $id
      * @return view
      */
     public function showDetail($id)
     {
-        $product = Product::find($id);
-        $company = $product->company;
+        try {
+            $product = $this->product->productDetail($id);
 
-        if (is_null($product)) {
-            \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
-            return redirect(route('products'));
+            if (is_null($product)) {
+                \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
+                return redirect(route('products'));
+            }
+        } catch (\Throwable $e) {
+            throw new \Exception($e->getMessage());
         }
 
-        return view('detail', compact('product', 'company'));
+        return view('detail', compact('product'));
     }
 
     /**
@@ -130,12 +138,16 @@ class ProductController extends Controller
      */
     public function showEdit($id)
     {
-        $product = Product::find($id);
-        $companies = Company::all();
-
-        if (is_null($product)) {
-            \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
-            return redirect(route('products'));
+        try {
+            $product = $this->product->productDetail($id);
+            $companies = $this->company->companyData();
+        
+            if (is_null($product)) {
+                \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
+                return redirect(route('products'));
+            }
+        } catch (\Throwable $e) {
+            throw new \Exception($e->getMessage());
         }
 
         return view('edit', compact('product', 'companies'));
