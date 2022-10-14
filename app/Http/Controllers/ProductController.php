@@ -7,6 +7,7 @@ use App\Models\Product;
 use App\Models\Company;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\DB;
+use Config\FlashMessage;
 
 class ProductController extends Controller
 {
@@ -74,7 +75,7 @@ class ProductController extends Controller
         $company = $product->company;
 
         if (is_null($product)) {
-            \Session::flash('err_msg', 'データがありません');
+            \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
             return redirect(route('products'));
         }
 
@@ -118,7 +119,7 @@ class ProductController extends Controller
             throw new \Exception($e->getMessage());
         }
 
-        \Session::flash('err_msg', '商品を登録しました');
+        \Session::flash('err_msg', FlashMessage::PRODUCT_REGISTER_MESSAGE);
         return redirect(route('products'));
     }
 
@@ -133,7 +134,7 @@ class ProductController extends Controller
         $companies = Company::all();
 
         if (is_null($product)) {
-            \Session::flash('err_msg', 'データがありません');
+            \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
             return redirect(route('products'));
         }
 
@@ -161,7 +162,7 @@ class ProductController extends Controller
             throw new \Exception($e->getMessage());
         }
 
-        \Session::flash('err_msg', '商品を更新しました');
+        \Session::flash('err_msg', FlashMessage::PRODUCT_UPDATE_MESSAGE);
         return redirect(route('products'));
     }
 
@@ -173,7 +174,7 @@ class ProductController extends Controller
     public function exeDelete(Request $request)
     {                
         if (empty($request->product_id)) {
-            \Session::flash('err_msg', 'データがありません');
+            \Session::flash('err_msg', FlashMessage::ERROR_MESSAGE);
             return redirect(route('products'));
         }
 
@@ -187,7 +188,7 @@ class ProductController extends Controller
             throw new \Exception($e->getMessage());
         }
 
-        \Session::flash('err_msg', '削除しました。');
+        \Session::flash('err_msg', FlashMessage::PRODUCT_DELETE_MESSAGE);
         return redirect(route('products'));
     }
 }
