@@ -17,6 +17,11 @@
             <span>在庫:{{ $product->stock }}</span>
             <span>メーカー:{{ $product->company_name }}</span>
         </div>
+        <div class="mt-5">
+            <a class="btn btn-primary" href="{{ route('products') }}">
+                戻る
+            </a>
+        </div>
     </div>
 </div>
 
