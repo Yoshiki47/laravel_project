@@ -6,6 +6,50 @@
         <div class="col-md-12 col-md-offset-2">
             <div class="card">
                 <h2 class="card-header">商品一覧</h2>
+                <!-- 検索フォーム -->
+                <div class="form-gruop mt-3 my-2 lg-0 ml-4">
+                    <form method="GET" action="{{ route('products') }}" id="serachForm" class="form-inline">
+                        <!-- キーワード検索 -->
+                        <div class="search-form">
+                            <input type="text" class="form-control mr-sm-2" name="keyword" value="{{ $data['keyword'] }}" placeholder="キーワードを入力してください">
+                        </div>
+                        <!-- セレクトボックス検索 -->
+                        <div class="search-dropDpwn">
+                            <select name="company_id">
+                                <option value="" selected>メーカーを選択してください</option>
+                                @foreach ($data['companies'] as $company)
+                                @if (request('coompany_id') == $company->id)
+                                <option id="company_id" name="company_id" value="{{ $company->id }}">
+                                    {{ $company->company_name}}
+                                </option>
+                                @else
+                                <option id="company_id" name="company_id" value="{{ $company->id }}">
+                                    {{ $company->company_name}}
+                                </option>
+                                @endif
+                                @endforeach
+                            </select>
+                        </div>
+                        <!-- 価格検索 -->
+                        <div class="search_price">
+                            価格:
+                            <input type="number" name="min_price" id="min_price" class="form-control" value="{{ $data['min_price'] }}">円
+                            ~
+                            <input type="number" name="max_price" id="max_price" class="form-control" value="{{ $data['max_price'] }}">円
+                        </div>
+                        <!-- 在庫数検索 -->
+                        <div class="search_stock">
+                            在庫数:
+                            <input type="number" name="min_stock" id="min_stock" class="form-control" value="{{ $data['min_stock'] }}">個
+                            ~
+                            <input type="number" name="max_stock" id="max_stock" class="form-control" value="{{ $data['max_stock'] }}">個
+                        </div>
+                        <!-- 検索ボタン -->
+                        <div class="serch-btn ml-2">
+                            <button class="btn btn-primary" type="submit">商品を探す</button>
+                        </div>
+                    </form>
+                </div>
 
                 <div class="card-body">
                     @if (session('err_msg'))
@@ -25,7 +69,7 @@
                             <th></th>
                             <th></th>
                         </tr>
-                        @foreach ($products as $product)
+                        @foreach ($data['products'] as $product)
                         <tr>
                             <td>{{ $product->id }}</td>
                             <td>
@@ -57,7 +101,7 @@
         </div>
     </div>
 
-    <!-- ページネーションリンク -->
-    {{ $products->links('vendor.pagination.bootstrap-4') }}
+    <!-- ページネーションリンク(ページ移動しても検索条件保持) -->
+    {{ $data['products']->appends(request()->input())->links('vendor.pagination.bootstrap-4') }}
 </div>
 @endsection

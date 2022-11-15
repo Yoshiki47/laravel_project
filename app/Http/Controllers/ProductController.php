@@ -54,18 +54,47 @@ class ProductController extends Controller
     /**
      * 商品一覧を表示する
      * 
+     * @param Request $request
      * @return view
      */
-    public function showProductList()
+    public function showProductList(Request $request)
     {
+        // キーワード検索
+        // 検索フォームで入力された値を取得
+        $keyword = $request->input('keyword');
+        $selected_name = $request->input('company_id');
+
+        // 価格範囲検索
+        $min_price = $request->input('min_price');
+        $max_price = $request->input('max_price');        
+
+        // 在庫数範囲検索
+        $min_stock = $request->input('min_stock');
+        $max_stock = $request->input('max_stock');
+        
         try {
             $products = $this->product->productList();
-            $company = $this->company->companyData();
+            $companies = $this->company->companyData();
+
+            // キーワード、メーカー、価格範囲、在庫数範囲検索
+            if (!empty($keyword) || !empty($selected_name) || !empty($min_price) || !empty($max_price) || !empty($min_stock) || !empty($max_stock) || !empty($keyword) && !empty($selected_name) && !empty($min_price) && !empty($max_price) && !empty($min_stock) && !empty($max_stock) || !empty($min_price) && !empty($max_price) || !empty($min_stock) && !empty($max_stock)) {
+                $products = $this->product->searchKeyword($keyword, $selected_name, $min_price, $max_price, $min_stock, $max_stock);
+            }
         } catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
         }
 
-        return view('product', compact('products', 'company'));
+        $data = [
+            'products' => $products,
+            'companies' => $companies,
+            'keyword' => $keyword,
+            'min_price' => $min_price,
+            'max_price' => $max_price,
+            'min_stock' => $min_stock,
+            'max_stock' => $max_stock,
+        ];
+
+        return view('product', compact('data'));
     }
 
     /**
