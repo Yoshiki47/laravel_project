@@ -91,6 +91,7 @@ $(function() {
 
 	$('.del-btn').on('click', (event) => {
 		let delete_confirm = confirm('削除してよろしいですか？');
+		// event.preventDefault();
 
 		if (delete_confirm == true) {
 			let click_ele = $(event.target);
@@ -118,9 +119,7 @@ $(function() {
 				console.log('URL            : ' + url);
 			});
 		} else {
-			(function(e) {
-				e.preventDefault()
-			});
+			event.preventDefault();
 		}
 	});
 });
