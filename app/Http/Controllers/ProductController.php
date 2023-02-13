@@ -78,7 +78,8 @@ class ProductController extends Controller
 
             // キーワード、メーカー、価格範囲、在庫数範囲検索
             if (!empty($keyword) || !empty($selected_name) || !empty($min_price) || !empty($max_price) || !empty($min_stock) || !empty($max_stock) || !empty($keyword) && !empty($selected_name) && !empty($min_price) && !empty($max_price) && !empty($min_stock) && !empty($max_stock) || !empty($min_price) && !empty($max_price) || !empty($min_stock) && !empty($max_stock)) {
-                $products = $this->product->searchKeyword($keyword, $selected_name, $min_price, $max_price, $min_stock, $max_stock);
+                $products = $this->product->searchKeyword($keyword, $selected_name, $min_price, $max_price, $min_stock, $max_stock);                
+                return response()->json($products);
             }
         } catch (\Throwable $e) {
             throw new \Exception($e->getMessage());
@@ -88,6 +89,7 @@ class ProductController extends Controller
             'products' => $products,
             'companies' => $companies,
             'keyword' => $keyword,
+            'selected_name' => $selected_name,
             'min_price' => $min_price,
             'max_price' => $max_price,
             'min_stock' => $min_stock,
@@ -210,7 +212,7 @@ class ProductController extends Controller
     /**
      * 商品削除
      * 
-     * @param $id
+     * @param Request $request $id
      */
     public function exeDelete(Request $request)
     {                
@@ -224,12 +226,11 @@ class ProductController extends Controller
             // 商品を削除
             $this->product->deleteProduct($request->product_id);
             \DB::commit();
+            \Session::flash('err_msg', FlashMessage::PRODUCT_DELETE_MESSAGE);
+            return response()->json(null, 204);
         } catch(\Throwable $e) {
             \DB::rollback();
             throw new \Exception($e->getMessage());
         }
-
-        \Session::flash('err_msg', FlashMessage::PRODUCT_DELETE_MESSAGE);
-        return redirect(route('products'));
     }
 }
