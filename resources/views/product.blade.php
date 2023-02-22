@@ -60,17 +60,17 @@
 
                     <table class="table table-striped">
                         <tr>
-                            <th>商品番号</th>
-                            <th>商品画像</th>
-                            <th>商品名</th>
-                            <th>値段</th>
-                            <th>在庫</th>
-                            <th>メーカー名</th>
+                            <th>@sortablelink('id', '商品番号')</th>
+                            <th>@sortablelink('img_path', '商品画像')</th>
+                            <th>@sortablelink('product_name', '商品名')</th>
+                            <th>@sortablelink('price', '値段')</th>
+                            <th>@sortablelink('stock', '在庫')</th>
+                            <th>@sortablelink('companyName', 'メーカー名')</th>
                             <th></th>
                             <th></th>
                         </tr>
                         <tbody id="ajax_table">
-                        @foreach ($data['products'] as $product)
+                            @foreach ($data['products'] as $product)
                             <tr class="product-table-tr">
                                 <td>{{ $product->id }}</td>
                                 <td>

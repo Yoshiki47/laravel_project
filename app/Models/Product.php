@@ -3,10 +3,14 @@
 namespace App\Models;
 
 use Illuminate\Database\Eloquent\Model;
+use Kyslik\ColumnSortable\Sortable;
 use Illuminate\Support\Facades\DB;
 
 class Product extends Model
 {
+    // 一覧画面のソート
+    use Sortable;
+
     // テーブル名
     protected $table = 'products';
 
@@ -19,6 +23,15 @@ class Product extends Model
         'stock',
         'comment',
         'img_path',
+    ];
+
+    public $sortable = [
+        'id',
+        'img_path',
+        'product_name',
+        'price',
+        'stock',
+        'company_name',
     ];
 
 
@@ -41,12 +54,12 @@ class Product extends Model
 
 
     /**
-     * 商品一覧表示
+     * メーカー名でソートする機能
      * 
      * @return $products
      */
 
-    public function productList()
+    public function companyNameSortable($query, $direction)
     {
         $products = DB::table('products')
             ->join('companies', 'products.company_id', '=', 'companies.id')
@@ -59,8 +72,7 @@ class Product extends Model
                 'products.comment',
                 'companies.company_name',
             )
-            ->orderBy('products.id', 'asc')
-            ->paginate(10);
+            ->orderBy('companies.company_name', $direction);
 
         return $products;
     }

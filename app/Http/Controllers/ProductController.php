@@ -5,12 +5,15 @@ namespace App\Http\Controllers;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Company;
+use Kyslik\ColumnSortable\Sortable;
 use App\Http\Requests\ProductRequest;
 use Illuminate\Support\Facades\DB;
 use Config\FlashMessage;
 
 class ProductController extends Controller
 {
+    use Sortable;
+
     /**
      * Create a new controller instance.
      *
@@ -73,7 +76,7 @@ class ProductController extends Controller
         $max_stock = $request->input('max_stock');
         
         try {
-            $products = $this->product->productList();
+            $products = Product::sortable()->paginate(10);
             $companies = $this->company->companyData();
 
             // キーワード、メーカー、価格範囲、在庫数範囲検索
